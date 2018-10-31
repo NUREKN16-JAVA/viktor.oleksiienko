@@ -17,5 +17,8 @@ bin*
 .settings*
 .classpath
 .project
+
+# Custom
 .idea/
 UserManagement.iml
+TEST*
