@@ -1,0 +1,31 @@
+<project name="usermanagment" basedir="." default="compile">
+    <property name="build-dir" value="${basedir}/out/production/UserManagement" />
+    <property name="classes-dir" value="${build-dir}/classes" />
+    <property name="main-java-dir" value="${basedir}/src/main/java" />
+    <property name="test-java-dir" value="${basedir}/src/test/java" />
+
+    <target name="clean">
+        <delete dir="${build-dir}/" failonerror="no" />
+    </target>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${build-dir}/" />
+        <mkdir dir="${classes-dir}/" />
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${main-java-dir}/" destdir="${build-dir}/" />
+    </target>
+
+    <!--target name="test" depends="init">
+        <javac srcdir="${test-java-dir}/" destdir="${build-dir}" />
+    </target>
+
+    <junit>
+        <classpath>
+            <pathelement location="${build-dir}/" />
+        </classpath>
+        <formatter type="plain" />
+        <test name="ua.nure.kn16.oleksiienko.usermanagement.UserTest" />
+    </junit-->
+</project>
