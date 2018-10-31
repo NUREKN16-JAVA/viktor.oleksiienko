@@ -1,4 +1,5 @@
-<project name="usermanagment" basedir="." default="compile">
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="usermanagment" basedir="." default="test">
     <property name="build-dir" value="${basedir}/out/production/UserManagement" />
     <property name="classes-dir" value="${build-dir}/classes" />
     <property name="main-java-dir" value="${basedir}/src/main/java" />
@@ -14,18 +15,29 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${main-java-dir}/" destdir="${build-dir}/" />
+        <javac srcdir="${main-java-dir}/" destdir="${build-dir}/" includeantruntime="false" />
     </target>
 
-    <!--target name="test" depends="init">
-        <javac srcdir="${test-java-dir}/" destdir="${build-dir}" />
+    <target name="test-compile" depends="init">
+        <javac srcdir="${test-java-dir}/" destdir="${build-dir}" includeantruntime="false">
+            <classpath>
+                <path id="org.junit" location="C:\Users\Victor\IdeaProjects\UserManagment\lib\junit-4.10.jar" />
+            </classpath>
+        </javac>
     </target>
 
-    <junit>
-        <classpath>
-            <pathelement location="${build-dir}/" />
-        </classpath>
-        <formatter type="plain" />
-        <test name="ua.nure.kn16.oleksiienko.usermanagement.UserTest" />
-    </junit-->
+    <target name="test" depends="compile,test-compile">
+        <path location="./lib/junit-4.10.jar" />
+        <junit>
+            <classpath>
+                <pathelement location="${build-dir}"/>
+                <fileset dir="./lib">
+                    <include name="**/junit-4.10.jar"/>
+                </fileset>
+            </classpath>
+            <test name="ua.nure.kn16.oleksiienko.usermanagement.UserTest" />
+            <formatter type="plain" />
+        </junit>
+    </target>
+
 </project>
