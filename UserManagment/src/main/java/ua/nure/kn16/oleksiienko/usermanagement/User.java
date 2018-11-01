@@ -2,6 +2,9 @@ package ua.nure.kn16.oleksiienko.usermanagement;
 
 import java.time.LocalDate;
 
+/**
+ * Class for User's data
+ */
 public class User {
     private Long id;
     private String firstName;
@@ -14,6 +17,12 @@ public class User {
         this.setId();
     }
 
+    /**
+     * Create new User with params
+     * @param firstName
+     * @param lastName
+     * @param dateOfBirth
+     */
     public User(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,10 +70,17 @@ public class User {
         }
     }
 
+    /**
+     * @return User's full name like string "LastName, FirstName"
+     */
     public String getFullName() {
         return lastName + ", " + firstName;
     }
 
+    /**
+     * Method expects, that current user have defined dateOfBirth
+     * @return User's age in "years"
+     */
     public int getAge() {
         LocalDate currentDate = LocalDate.now().withDayOfMonth(20);
 
