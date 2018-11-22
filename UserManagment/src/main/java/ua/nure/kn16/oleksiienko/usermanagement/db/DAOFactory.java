@@ -37,11 +37,11 @@ public class DAOFactory {
             Class DAO = Class.forName(PROPERTIES.getProperty("ua.nure.kn16.oleksiienko.usermanagement.db.UserDAO"));
             UserDAO userDAO = (UserDAO) DAO.newInstance();
             userDAO.setConnectionFactory(this.getConnectionFactory());
+            return userDAO;
         } catch (ClassNotFoundException e) {
             throw new DatabaseException("Illegal UserDAO class name property!");
         } catch (Exception e) {
             throw new DatabaseException(e.toString());
         }
-        return null;
     }
 }

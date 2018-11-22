@@ -2,14 +2,12 @@ package ua.nure.kn16.oleksiienko.usermanagement.db;
 
 import ua.nure.kn16.oleksiienko.usermanagement.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HSQLDBUserDAO implements UserDAO{
+class HSQLDBUserDAO implements UserDAO{
     ConnectionFactory connectionFactory;
 
     HSQLDBUserDAO(ConnectionFactory connectionFactory) {
@@ -50,25 +48,83 @@ public class HSQLDBUserDAO implements UserDAO{
             callableStatement.close();
             statement.close();
             connection.close();
+
+            return use;
         } catch (DatabaseException | SQLException e) {
             throw new DatabaseException(e.toString());
         }
 
-        return use;
     }
 
     @Override
     public void update(User user) throws DatabaseException {
+        try {
+            Connection connection = connectionFactory.createConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE USERS SET firstname = ?, lastname = ?, dateofbirth = ? WHERE id = ?");
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setDate(3, Date.valueOf(user.getDateOfBirth()));
+            preparedStatement.setLong(4, user.getId());
 
+            int n = preparedStatement.executeUpdate();
+
+            if (n != 1) throw new DatabaseException("Number of inserted rows: " + n);
+
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
     public void delete(User user) throws DatabaseException {
+        try {
+            Connection connection = connectionFactory.createConnection();
 
+            PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM USERS WHERE id = ?");
+            statement.setLong(1, user.getId());
+
+            int n = statement.executeUpdate();
+
+            if (n != 1) throw new DatabaseException("Number of removed rows: " + n);
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
-    public User find(Long id) throws DatabaseException{
+    public User find(Long id) throws DatabaseException {
+        try {
+            User user = null;
+            Connection connection = connectionFactory.createConnection();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM USERS WHERE id = ?");
+            statement.setLong(1, id);
+            ResultSet usersResultSet = statement.executeQuery();
+
+            if (usersResultSet.next()) {
+                user = new User();
+                user.setId(usersResultSet.getLong(1));
+                user.setFirstName(usersResultSet.getString(2));
+                user.setLastName(usersResultSet.getString(3));
+                Date date = usersResultSet.getDate(4);
+                user.setDateOfBirth(date.toLocalDate());
+            }
+
+            connection.close();
+            statement.close();
+            usersResultSet.close();
+
+            return user;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
