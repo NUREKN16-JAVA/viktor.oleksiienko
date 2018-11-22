@@ -97,4 +97,15 @@ public class HSQLDBUserDAO implements UserDAO{
         }
 
     }
+
+    @Override
+    public void setConnectionFactory(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
+
+    public ConnectionFactory getConnectionFactory() {
+        return connectionFactory;
+    }
+
+    public HSQLDBUserDAO() { }
 }

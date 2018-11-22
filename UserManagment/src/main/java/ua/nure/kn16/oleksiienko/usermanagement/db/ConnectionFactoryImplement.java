@@ -3,13 +3,24 @@ package ua.nure.kn16.oleksiienko.usermanagement.db;
 import java.sql.Connection;
 
 public class ConnectionFactoryImplement implements ConnectionFactory {
+    private static String DRIVER;
+    private static String URL;
+    private static String USER;
+    private static String PASSWORD;
+
+    public ConnectionFactoryImplement() {
+
+    }
+
+    public ConnectionFactoryImplement(String driver, String url, String user, String password) {
+        this.DRIVER = driver;
+        this.URL = url;
+        this.USER = user;
+        this.PASSWORD = password;
+    }
+
     @Override
     public Connection createConnection() throws DatabaseException{
-        final String DRIVER = "org.hsqldb.jdbcDriver";
-        final String URL = "jdbc:hsqldb:file:db/usermanagement";
-        final String USER = "sa";
-        final String PASSWORD = "";
-
         try {
             Class.forName(DRIVER);
         } catch (java.lang.ClassNotFoundException e) {

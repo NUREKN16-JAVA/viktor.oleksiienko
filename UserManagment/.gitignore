@@ -21,4 +21,4 @@ bin*
 # Custom
 .idea/
 UserManagement.iml
-TEST*
+TEST-*

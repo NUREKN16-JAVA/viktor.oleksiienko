@@ -19,4 +19,10 @@ public interface UserDAO {
     User find(Long id) throws DatabaseException;
 
     List<User> findAll() throws DatabaseException;
+
+    /**
+     * Set connection factory for User's data access object.
+     * @param connectionFactory
+     */
+    void setConnectionFactory(ConnectionFactory connectionFactory);
 }
