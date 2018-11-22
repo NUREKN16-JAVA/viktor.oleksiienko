@@ -11,10 +11,7 @@ public class User {
     private String lastName;
     private LocalDate dateOfBirth;
 
-    private static Long newId = 0L;
-
     public User() {
-        this.setId();
     }
 
     /**
@@ -27,17 +24,28 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.setId();
+    }
+
+    public User(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.dateOfBirth = user.getDateOfBirth();
     }
 
     public Long getId() {
         return id;
     }
 
-    private void setId() {
-        if (this.id == null) {
-            this.id = ++newId;
-        }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

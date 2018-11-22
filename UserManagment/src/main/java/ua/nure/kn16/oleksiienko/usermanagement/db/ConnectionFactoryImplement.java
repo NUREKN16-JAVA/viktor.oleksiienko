@@ -19,7 +19,7 @@ public class ConnectionFactoryImplement implements ConnectionFactory {
         try {
             newConnection = java.sql.DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (java.sql.SQLException e) {
-            throw new DatabaseException(e.toString());
+            throw new DatabaseException(e);
         }
 
         return newConnection;
