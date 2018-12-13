@@ -96,21 +96,20 @@ public class MainFrameTest extends JFCTestCase {
         LocalDate dateOfBirth = LocalDate.now();
 
         User user = new User(firstName, lastName, dateOfBirth);
-        User expectedUser = new User(1L, firstName, lastName, dateOfBirth);
-
+        User expectedUser = new User(0L, firstName, lastName, dateOfBirth);
         mockUserDAO.expectAndReturn("create", user, expectedUser);
 
         ArrayList<User> userList = new ArrayList<>();
         userList.add(expectedUser);
         mockUserDAO.expectAndReturn("findAll", userList);
 
-        JButton addButton = (JButton) find(JButton.class, "addButton");
-        MouseEventData mouseEventData = new MouseEventData(this, addButton);
-        getHelper().enterClickAndLeave(mouseEventData);
-        find(JPanel.class, "addPanel");
-
         JTable table = (JTable) find(JTable.class, "userTable");
         assertEquals(0, table.getRowCount());
+
+        JButton addButton = (JButton) find(JButton.class, "addButton");
+        getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
+
+        find(JPanel.class, "addPanel");
 
         JTextField firstNameField = (JTextField) find(JTextField.class, "firstNameField");
         JTextField dateOfBirthField = (JTextField) find(JTextField.class, "dateOfBirthField");

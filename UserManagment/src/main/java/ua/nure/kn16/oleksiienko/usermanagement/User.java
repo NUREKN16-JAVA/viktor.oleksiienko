@@ -93,14 +93,43 @@ public class User {
         LocalDate currentDate = LocalDate.now().withDayOfMonth(20);
 
         int age = currentDate.getYear() - dateOfBirth.getYear();
-        /*if (currentDate.getDayOfYear() < dateOfBirth.getDayOfYear()) {
-            age--;
-        }*/
+
         if (currentDate.getMonthValue() < dateOfBirth.getMonthValue() ||
                 (currentDate.getMonthValue() == dateOfBirth.getMonthValue() &&
                         currentDate.getDayOfMonth() < dateOfBirth.getDayOfMonth())) {
             age--;
         }
         return age;
+    }
+
+    @Override
+    public String toString() {
+        return "Class: User\nName: " + firstName + "\nSurname: " + lastName + "\nDate of Birth: " + dateOfBirth;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.getId() == null) {
+            return 0;
+        }
+
+        return this.getId().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (this.getId() == null && ((User)obj).getId() == null) {
+            return true;
+        }
+
+        return this.getId().equals(((User)obj).getId());
     }
 }
