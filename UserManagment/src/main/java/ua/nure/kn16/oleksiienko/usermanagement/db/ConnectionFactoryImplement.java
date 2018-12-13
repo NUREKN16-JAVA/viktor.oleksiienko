@@ -1,6 +1,7 @@
 package ua.nure.kn16.oleksiienko.usermanagement.db;
 
 import java.sql.Connection;
+import java.util.Properties;
 
 public class ConnectionFactoryImplement implements ConnectionFactory {
     private static String DRIVER;
@@ -8,15 +9,13 @@ public class ConnectionFactoryImplement implements ConnectionFactory {
     private static String USER;
     private static String PASSWORD;
 
-    public ConnectionFactoryImplement() {
+    public ConnectionFactoryImplement() {     }
 
-    }
-
-    public ConnectionFactoryImplement(String driver, String url, String user, String password) {
-        this.DRIVER = driver;
-        this.URL = url;
-        this.USER = user;
-        this.PASSWORD = password;
+    public ConnectionFactoryImplement(Properties properties) {
+        this.USER = properties.getProperty("connection.user");
+        this.PASSWORD = properties.getProperty("connection.password");
+        this.URL = properties.getProperty("connection.url");
+        this.DRIVER = properties.getProperty("connection.driver");
     }
 
     @Override
