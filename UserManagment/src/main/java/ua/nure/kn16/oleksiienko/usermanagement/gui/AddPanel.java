@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+
+import ua.nure.kn16.oleksiienko.usermanagement.User;
+import ua.nure.kn16.oleksiienko.usermanagement.db.DatabaseException;
 import ua.nure.kn16.oleksiienko.usermanagement.util.Message;
 
 public class AddPanel extends JPanel implements ActionListener {
@@ -17,6 +21,7 @@ public class AddPanel extends JPanel implements ActionListener {
     private JTextField dateOfBirth;
     private JTextField lastNameField;
     private JTextField firstNameField;
+    private Color bgColor = Color.WHITE;
 
     AddPanel(MainFrame mainFrame) {
         parent = mainFrame;
@@ -116,10 +121,39 @@ public class AddPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String action = actionEvent.getActionCommand();
-        if (action.equalsIgnoreCase("cancelBut")) {
+        if (action.equalsIgnoreCase("ok")) {
+            User user = new User();
+            user.setFirstName(getFirstNameField().getText());
+            user.setLastName(getLastNameField().getText());
+            try {
+                user.setDateOfBirth(LocalDate.parse(getDateOfBirthField().getText()));
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(this,
+                        exc.getMessage() + Message.getString("errorWrongDateFormat"),
+                        Message.getString("errorTitle"), JOptionPane.ERROR_MESSAGE);
+                getDateOfBirthField().setBackground(Color.RED);
+            }
+
+            try {
+                parent.getDAO().create(user);
+            } catch (DatabaseException exc) {
+                JOptionPane.showMessageDialog(this, exc.getMessage(), Message.getString("errorTitle"), JOptionPane.ERROR_MESSAGE);
+            }
 
         }
+        clearFields();
         this.setVisible(false);
         parent.showBrowsePanel();
+    }
+
+    private void clearFields() {
+        getFirstNameField().setText("");
+        getFirstNameField().setBackground(bgColor);
+
+        getLastNameField().setText("");
+        getLastNameField().setBackground(bgColor);
+
+        getDateOfBirthField().setText("");
+        getDateOfBirthField().setBackground(bgColor);
     }
 }

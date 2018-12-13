@@ -1,11 +1,13 @@
 package ua.nure.kn16.oleksiienko.usermanagement.gui;
 
+import ua.nure.kn16.oleksiienko.usermanagement.db.DatabaseException;
 import ua.nure.kn16.oleksiienko.usermanagement.util.Message;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class BrowsePanel extends JPanel implements ActionListener {
     private MainFrame parent;
@@ -28,7 +30,6 @@ public class BrowsePanel extends JPanel implements ActionListener {
         this.add(getTablePanel(), BorderLayout.CENTER);
         this.add(getButtonsPanel(), BorderLayout.SOUTH);
         this.setName("browserPanel");
-
     }
 
     private JPanel getButtonsPanel() {
@@ -106,6 +107,17 @@ public class BrowsePanel extends JPanel implements ActionListener {
         }
 
         return userTable;
+    }
+
+    public void initTable() {
+        UserTableModel model;
+        try {
+            model = new UserTableModel(parent.getDAO().findAll());
+        } catch (DatabaseException e) {
+            model = new UserTableModel(new ArrayList());
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        getUserTable().setModel(model);
     }
 
     @Override

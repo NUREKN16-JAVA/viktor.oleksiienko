@@ -1,5 +1,7 @@
 package ua.nure.kn16.oleksiienko.usermanagement.gui;
 
+import ua.nure.kn16.oleksiienko.usermanagement.db.DAOFactory;
+import ua.nure.kn16.oleksiienko.usermanagement.db.UserDAO;
 import ua.nure.kn16.oleksiienko.usermanagement.util.Message;
 
 import javax.swing.*;
@@ -11,14 +13,25 @@ public class MainFrame extends JFrame {
     private JPanel contentPanel;
     private JPanel browsePanel;
     private JPanel addPanel;
-
+    private UserDAO dao;
 
     public MainFrame() {
+        try {
+            dao = DAOFactory.getInstance().getUserDAO();
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+        init();
+    }
+
+    private void init() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle(Message.getString("userManagementTitle"));
         this.setContentPane(getContentPanel());
     }
+
+    public UserDAO getDAO() { return dao; }
 
     private JPanel getContentPanel() {
         if (contentPanel == null) {
@@ -34,6 +47,7 @@ public class MainFrame extends JFrame {
         if (browsePanel == null) {
             browsePanel = new BrowsePanel(this);
         }
+        ((BrowsePanel) browsePanel).initTable();
 
         return browsePanel;
     }
