@@ -1,5 +1,7 @@
 package ua.nure.kn16.oleksiienko.usermanagement.gui;
 
+import ua.nure.kn16.oleksiienko.usermanagement.util.Message;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -44,8 +46,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getAddButton() {
         if (addButton == null) {
             addButton = new JButton();
-            addButton.setText("Добавить");
-//            addButton.setText(Message.getString("add.user_button"));
+            addButton.setText(Message.getString("addButton"));
             addButton.setName("addButton");
             addButton.setActionCommand("add");
             addButton.addActionListener(this);
@@ -57,8 +58,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getEditButton() {
         if (editButton == null) {
             editButton = new JButton();
-            editButton.setText("Редактировать");
-//            editButton.setText(Message.getString("edit.user_button"));
+            editButton.setText(Message.getString("editButton"));
             editButton.setName("editButton");
             editButton.setActionCommand("edit");
             editButton.addActionListener(this);
@@ -70,8 +70,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getDeleteButton() {
         if (deleteButton == null) {
             deleteButton = new JButton();
-            deleteButton.setText("Удалить");
-//            deleteButton.setText(Message.getString("delete.user_button"));
+            deleteButton.setText(Message.getString("deleteButton"));
             deleteButton.setName("deleteButton");
             deleteButton.setActionCommand("delete");
             deleteButton.addActionListener(this);
@@ -83,8 +82,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getDetailsButton() {
         if (detailsButton == null) {
             detailsButton = new JButton();
-            detailsButton.setText("Подробнее");
-//            detailsButton.setText(Message.getString("user.details_button"));
+            detailsButton.setText(Message.getString("detailsButton"));
             detailsButton.setName("detailsButton");
             detailsButton.setActionCommand("details");
             detailsButton.addActionListener(this);
@@ -112,6 +110,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        String action = actionEvent.getActionCommand();
+        if (action.equalsIgnoreCase("add")) {
+            this.setVisible(false);
+            parent.showAddPanel();
+        }
     }
 }
