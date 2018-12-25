@@ -19,7 +19,8 @@ public abstract class MockServletTestCase extends BasicServletTestCaseAdapter {
 
     }
 
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         mockUserDAO.verify();
 
     }
