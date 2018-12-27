@@ -14,7 +14,7 @@ public class MockDaoFactory extends DAOFactory{
     }
 
     @Override
-    public UserDAO getUserDAO() throws ReflectiveOperationException {
+    public UserDAO getUserDAO() {
         return (UserDAO) mockUserDao.proxy();
     }
 }
