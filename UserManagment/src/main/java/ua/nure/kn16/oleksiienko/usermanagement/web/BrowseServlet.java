@@ -3,6 +3,7 @@ package ua.nure.kn16.oleksiienko.usermanagement.web;
 import ua.nure.kn16.oleksiienko.usermanagement.User;
 import ua.nure.kn16.oleksiienko.usermanagement.db.DAOFactory;
 import ua.nure.kn16.oleksiienko.usermanagement.db.DatabaseException;
+import ua.nure.kn16.oleksiienko.usermanagement.db.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,13 +38,47 @@ public class BrowseServlet extends HttpServlet {
         } catch (DatabaseException | ReflectiveOperationException e) {
             throw new ServletException(e);
         }
-
     }
 
-    private void details(HttpServletRequest req, HttpServletResponse resp) {
+    private void details(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idStr = req.getParameter("id");
+        if(idStr == null || idStr.trim().length() == 0) {
+            req.setAttribute("error", "You must select a user");
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+            return;
+        }
+
+        try {
+            User user = DAOFactory.getInstance().getUserDAO().find(new Long(idStr));
+            req.getSession().setAttribute("user", user);
+        } catch(Exception e) {
+            req.setAttribute("error", "ERROR: " + e.toString());
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+            return;
+        }
+
+        req.getRequestDispatcher("/details").forward(req, resp);
     }
 
-    private void delete(HttpServletRequest req, HttpServletResponse resp) {
+    private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        if (id == null || id.trim().length() == 0) {
+            req.setAttribute("error", "You must select a user");
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+            return;
+        }
+
+        try {
+            UserDAO userDao = DAOFactory.getInstance().getUserDAO();
+            User user = userDao.find(new Long(id));
+            userDao.delete(user);
+            req.setAttribute("message", "Deleted user: " + user.toString());
+            resp.sendRedirect("./browse");
+        } catch (Exception e) {
+            req.setAttribute("error", e.toString());
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+            return;
+        }
     }
 
     private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -63,9 +98,10 @@ public class BrowseServlet extends HttpServlet {
             return;
         }
 
-        req.getRequestDispatcher("/edit.jsp").forward(req, resp);
+        req.getRequestDispatcher("/edit").forward(req, resp);
     }
 
-    private void add(HttpServletRequest req, HttpServletResponse resp) {
+    private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/add").forward(req, resp);
     }
 }

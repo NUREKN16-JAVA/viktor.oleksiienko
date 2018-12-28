@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class EditServletTest extends MockServletTestCase {
     @Test
     public void testEdit() {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
 
         String dateFormatted = sdf.format(date);
 
