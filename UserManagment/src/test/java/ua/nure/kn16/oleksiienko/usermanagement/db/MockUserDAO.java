@@ -2,6 +2,7 @@ package ua.nure.kn16.oleksiienko.usermanagement.db;
 
 import ua.nure.kn16.oleksiienko.usermanagement.User;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,11 @@ import java.util.Map;
 public class MockUserDAO implements UserDAO {
     private Long globalId = 0L;
     private Map<Long, User> users = new HashMap<>();
+
+    @Override
+    public Collection<User> find(String firstName, String lastName) throws DatabaseException {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public User create(User user) throws DatabaseException {

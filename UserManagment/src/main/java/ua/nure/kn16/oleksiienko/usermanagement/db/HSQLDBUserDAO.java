@@ -5,6 +5,8 @@ import ua.nure.kn16.oleksiienko.usermanagement.User;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 class HSQLDBUserDAO implements UserDAO{
@@ -12,6 +14,34 @@ class HSQLDBUserDAO implements UserDAO{
 
     HSQLDBUserDAO(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
+    }
+
+    @Override
+    public Collection<User> find(String firstName, String lastName) throws DatabaseException {
+        Collection<User> result = new LinkedList<User>();
+
+        try {
+            Connection connection = connectionFactory.createConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE firstName = ? AND lastName = ?");
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                User user = new User();
+                user.setId(new Long(resultSet.getLong(1)));
+                user.setFirstName(resultSet.getString(2));
+                user.setLastName(resultSet.getString(3));
+                user.setDateOfBirth(resultSet.getDate(4).toLocalDate());
+                result.add(user);
+                preparedStatement.close();
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+
+        return result;
     }
 
     /**
