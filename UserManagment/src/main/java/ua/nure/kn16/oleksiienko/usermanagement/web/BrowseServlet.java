@@ -72,7 +72,8 @@ public class BrowseServlet extends HttpServlet {
             UserDAO userDao = DAOFactory.getInstance().getUserDAO();
             User user = userDao.find(new Long(id));
             userDao.delete(user);
-            req.setAttribute("message", "Deleted user: " + user.toString());
+            req.setAttribute("message", user.getFullName() + " was successfully deleted");
+            browse(req, resp);
             resp.sendRedirect("./browse");
         } catch (Exception e) {
             req.setAttribute("error", e.toString());
