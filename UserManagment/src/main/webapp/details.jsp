@@ -18,10 +18,10 @@
     </p>
     <br> <input type="submit" name="cancelButton" value="Ok">
 </form>
-
 <c:if test="${requestScope.error != null}">
     <script>
         alert('${requestScope.error}');
     </script>
 </c:if>
+<!-- test -->
 </body>

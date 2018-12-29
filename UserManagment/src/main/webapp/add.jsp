@@ -11,9 +11,9 @@
     <p>Last name</p>
     <input type="text" name="lastName" value="">
     <p>Date of birth</p>
-    <input type="text" name="date" value=""> <br> <input
-        type="submit" name="okButton" value="Ok"> <input
-        type="submit" name="cancelButton" value="Cancel">
+    <input type="text" name="date" value=""> <br />
+    <input type="submit" name="okButton" value="Ok">
+    <input type="submit" name="cancelButton" value="Cancel">
 </form>
 
 <c:if test="${requestScope.error != null}">
