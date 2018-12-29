@@ -1,9 +1,6 @@
 package ua.nure.kn16.oleksiienko.usermanagement.agent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -20,7 +17,7 @@ public class RequestServer extends CyclicBehaviour {
             if (message.getPerformative() == ACLMessage.REQUEST) {
                 myAgent.send(createReply(message));
             } else {
-                Collection users = parseMessage(message);
+                Collection<User> users = parseMessage(message);
                 ((SearchAgent) myAgent).showUsers(users);
             }
         } else {
@@ -28,8 +25,22 @@ public class RequestServer extends CyclicBehaviour {
         }
     }
 
-    private Collection parseMessage(ACLMessage message) {
-        return null;
+    private Collection<User> parseMessage(ACLMessage message) {
+        Collection<User> users = new LinkedList<>();
+        String content = message.getContent();
+
+        if (content != null) {
+            StringTokenizer contentTokenizer = new StringTokenizer(content, ";");
+            while (contentTokenizer.hasMoreTokens()) {
+                String userInfo = contentTokenizer.nextToken();
+                StringTokenizer userTokenizer = new StringTokenizer(userInfo, ",");
+                String id = userTokenizer.nextToken();
+                String firstName = userTokenizer.nextToken();
+                String lastName = userTokenizer.nextToken();
+                users.add(new User(new Long(id), firstName, lastName, null));
+            }
+        }
+        return users;
     }
 
     private ACLMessage createReply(ACLMessage message) {

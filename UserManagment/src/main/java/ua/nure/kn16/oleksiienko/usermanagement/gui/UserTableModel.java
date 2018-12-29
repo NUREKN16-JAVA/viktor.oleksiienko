@@ -12,10 +12,18 @@ public class UserTableModel extends AbstractTableModel{
             Message.getString("nameTable"),
             Message.getString("surnameTable")};
     private static final Class[] COLUMN_CLASSES = {Long.class, String.class, String.class};
-    private List users = null;
+    private List users;
 
-    UserTableModel (Collection users) {
+    public UserTableModel (Collection users) {
         this.users = new ArrayList(users);
+    }
+
+    public void addUsers(Collection<User> users) {
+        this.users.addAll(users);
+    }
+
+    public void clearUsers() {
+        this.users = new ArrayList<>();
     }
 
     @Override
