@@ -7,7 +7,7 @@
 <form action="<%=request.getContextPath()%>/browse" method="post">
     <table id="userTable" style="border: 1px;">
         <tr>
-            <th></th>
+            <th> </th>
             <th>First name</th>
             <th>Last name</th>
             <th>Date of birth</th>
